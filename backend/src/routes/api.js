@@ -1,9 +1,13 @@
 const express = require('express')
 const router = express.Router()
-// const userController = require('../controllers/UserController')
+const userController = require('../controllers/UserController')
+const { authenticateToken } = require('../middlewares/authentication');
 
 
-// router.post('/login', userController.login)
+router.get('/welcome', userController.welcome);
+router.post('/login', userController.login);
+router.post('/create-movie', authenticateToken, userController.createMovie);
+
 
 
 
