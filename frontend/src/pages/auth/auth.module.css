@@ -1,0 +1,17 @@
+.landing {
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   min-height: 100vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.landingBox {
+   max-width: 760px;
+   width: 95%;
+   border-radius: 28px;
+   background-color: rgba(0, 0, 0, 0.54);
+   padding: 60px 53px;
+}

@@ -1,0 +1,62 @@
+/* css reset start */
+*,
+*::before,
+*::after {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+
+html {
+   line-height: normal;
+}
+
+label {
+   display: inline-block;
+}
+
+button {
+   border-radius: 0;
+   background-color: transparent;
+   border: none;
+}
+
+button:focus:not(:focus-visible) {
+   outline: 0;
+}
+
+input,
+button,
+select,
+optgroup,
+textarea {
+   font-family: inherit;
+   font-size: inherit;
+   line-height: inherit;
+}
+
+input:focus,
+textarea:focus,
+input:focus-visible,
+textarea:focus-visible {
+   outline: none;
+}
+
+button,
+select {
+   text-transform: none;
+}
+
+
+/* css reset end */
+
+.icon svg, .icon img {
+   width: 100%;
+   height: auto;
+   flex-shrink: 0;
+}
+
+.center-y {
+   top: 50%;
+   transform: translateY(-50%);
+}
