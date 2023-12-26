@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import TextInput from '../../components/TextInput';
-import { loginFormElements } from '../../helper/authConfig';
+import { loginFormElements } from '../../helper/config';
 import Button from '../../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import HeadingLarge from '../../components/typography/HeadingLarge';

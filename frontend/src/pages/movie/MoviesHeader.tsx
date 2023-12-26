@@ -9,13 +9,13 @@ function MoviesHeader() {
       <div className="flex items-center justify-between">
          <div className="flex space-x-4 items-center">
             <HeadingMedium>My movies</HeadingMedium>
-            <NavLink to='add' className="w-7 icon">
+            <NavLink to='add' className="w-6 md:w-7 icon">
                <PlusIcon />
             </NavLink>
          </div>
          <button className="flex space-x-4 items-center">
-            <TextPrimary className="font-bold">Logout</TextPrimary>
-            <div className="w-7 icon">
+            <TextPrimary className="font-bold hidden md:block">Logout</TextPrimary>
+            <div className="w-6 md:w-7 icon">
                <LogoutIcon />
             </div>
          </button>
