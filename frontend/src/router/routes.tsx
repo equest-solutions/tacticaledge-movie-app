@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { Route } from '../typescript/interfaces/global';
 import { Navigate } from 'react-router-dom';
 import AddMovie from '../pages/movie/AddMovie';
+import EditMovie from '../pages/movie/EditMovie';
 
 const Login = lazy(() => import('../pages/auth/Login'));
 const MovieList = lazy(() => import('../pages/movie/MovieList'));
@@ -21,7 +22,7 @@ const routes: Route[] = [
     },
     {
         path: '/movies/edit/:movieId',
-        element: <AddMovie />,
+        element: <EditMovie />,
     },
     {
         path: '*',

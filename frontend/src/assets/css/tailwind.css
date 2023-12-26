@@ -235,8 +235,8 @@
    .btn-primary {
       @apply border-primary bg-primary text-white hover:bg-primary-100 hover:border-primary-100 active:scale-[99%];
    }
-   .btn-outline-primary {
-      @apply border-primary border text-primary hover:bg-primary hover:text-white;
+   .btn-outline {
+      @apply border-white border-solid border text-white hover:border-primary hover:bg-primary hover:text-white;
    }
 
    .btn-secondary {
@@ -353,7 +353,7 @@
       @apply py-1.5 text-xs;
    }
    label {
-      @apply block font-medium;
+      @apply block;
    }
    [dir="rtl"] select {
       background-position: left 0.5rem center;

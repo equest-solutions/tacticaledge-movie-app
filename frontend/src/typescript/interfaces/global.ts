@@ -21,6 +21,7 @@ export interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLIn
    hasError?: boolean;
    icon?: JSX.Element;
    label?: string;
+   inputClass?: string;
 }
 
 // * icon types
@@ -39,6 +40,7 @@ interface LinkPresent extends CustomClassProps {
 
 interface LinkAbsent extends CustomClassProps {
    isLink?: false | undefined;
+   type?: 'button' | 'submit';
 }
 
 export type ButtonClassProps = LinkPresent | LinkAbsent;
