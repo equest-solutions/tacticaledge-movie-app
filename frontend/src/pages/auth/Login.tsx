@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import TextInput from '../../components/TextInput';
-import { loginFormElements } from '../../helper/config';
+import { LOGIN_URL, loginFormElements } from '../../helper/config';
 import Button from '../../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import HeadingLarge from '../../components/typography/HeadingLarge';
@@ -25,11 +25,10 @@ function Login() {
 
    function inputChangeHandler(key: string, e: FormEvent<HTMLInputElement>) {
       const value = (e.target as HTMLInputElement).value;
-      console.log(value, key)
-      if(isValid(value, key)) {
-         setFormError(prev => {
-            return {...prev, [key]: false}
-         })
+      if (isValid(value, key)) {
+         setFormError((prev) => {
+            return { ...prev, [key]: false };
+         });
       }
    }
 
@@ -38,8 +37,8 @@ function Login() {
       const formData = new FormData(e.target as HTMLFormElement);
       const data = Object.fromEntries(formData);
       let isFormValid = true;
-      setFormError(prev => {
-         return {...prev, formValid: true}
+      setFormError((prev) => {
+         return { ...prev, formValid: true };
       });
 
       Object.keys(data).forEach((key) => {
@@ -54,7 +53,7 @@ function Login() {
 
       if (!isFormValid) return;
 
-      if(data.rememberLogin) {
+      if (data.rememberLogin) {
          localStorage.setItem('email', data.email as string);
          localStorage.setItem('password', data.password as string);
       } else {
@@ -62,11 +61,22 @@ function Login() {
          localStorage.removeItem('password');
       }
 
-      console.log(data);
-      // todo - add login method and
-
-      // after login
-      navigate('/movies');
+      fetch(LOGIN_URL, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+         }),
+      })
+         .then((res) => {
+            return res.json();
+         })
+         .then((data) => {
+            navigate('/movies');
+         });
    }
 
    return (
@@ -80,7 +90,9 @@ function Login() {
                         <div key={item.id}>
                            <TextInput
                               defaultValue={localStorage.getItem(item.id) || ''}
-                              onChange={(e) => {if(!formError.formValid) inputChangeHandler(item.id, e)}} 
+                              onChange={(e) => {
+                                 if (!formError.formValid) inputChangeHandler(item.id, e);
+                              }}
                               hasError={formError[item.id as keyof FormState]}
                               label={item.label}
                               type={item.type}

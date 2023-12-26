@@ -33,3 +33,12 @@ export const movieFormElements: FormElement[] = [
    },
 ];
 //*********************  Movie Form static data end ********************//
+
+
+//*********************  API URL data end ********************//
+const BASE_URL = 'http://localhost:8000/';
+
+export const LOGIN_URL = BASE_URL + 'api/login';
+//*********************  API URL data end ********************//
+
+
