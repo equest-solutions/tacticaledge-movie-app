@@ -8,10 +8,19 @@ export interface CustomClassProps {
    size?: Size;
 }
 
+// * route types
+export interface Route {
+   path: string,
+   element: JSX.Element,
+   layout?: string
+}
+
 // * input types
 export interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
    name: string;
+   hasError?: boolean;
    icon?: JSX.Element;
+   label?: string;
 }
 
 // * icon types

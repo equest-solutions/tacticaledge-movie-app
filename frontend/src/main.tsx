@@ -1,32 +1,17 @@
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom/client'
-
-// Perfect Scrollbar
-import 'react-perfect-scrollbar/dist/css/styles.css';
-
-// Tailwind css
+import ReactDOM from 'react-dom/client';
 import './assets/css/tailwind.css';
 import './assets/css/custom.css';
-
-// i18n (needs to be bundled)
-import './i18n';
-
-// Router
-import { RouterProvider } from 'react-router-dom';
-import router from './router/index';
-
-// Redux
 import { Provider } from 'react-redux';
 import store from './store/index';
-
+import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <React.StrictMode>
-        <Suspense>
-            <Provider store={store}>
-                <RouterProvider router={router} />
-            </Provider>
-        </Suspense>
-    </React.StrictMode>
+   <React.StrictMode>
+      <Suspense>
+         <Provider store={store}>
+            <App />
+         </Provider>
+      </Suspense>
+   </React.StrictMode>
 );
-

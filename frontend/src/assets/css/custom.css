@@ -47,10 +47,10 @@ select {
    text-transform: none;
 }
 
-
 /* css reset end */
 
-.icon svg, .icon img {
+.icon svg,
+.icon img {
    width: 100%;
    height: auto;
    flex-shrink: 0;
@@ -59,4 +59,13 @@ select {
 .center-y {
    top: 50%;
    transform: translateY(-50%);
+}
+
+.card-image {
+   aspect-ratio: 266/400;
+}
+
+.card:hover {
+   cursor: pointer;
+   background: linear-gradient(0deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.09) 100%), rgba(8, 41, 53, 0.55);
 }
