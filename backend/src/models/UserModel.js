@@ -62,8 +62,6 @@ const createUser = async (userPayload) => {
   };
 
   const updateUserToken = (userId, token) => {
-    console.log('userId--------', userId);
-    console.log('token---------', token);
     const sql = 'UPDATE user SET token = ? WHERE id = ?';
     try {
       return new Promise((resolve, reject) => {
@@ -95,7 +93,7 @@ const createUser = async (userPayload) => {
 
     const uuid = uuidv4()
   
-    const sql = 'INSERT INTO movie (uuid, user_uuid, title, publishing_year, image, user_id) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO movie (uuid, user_uuid, title, publish_year, image) VALUES (?, ?, ?, ?, ?)';
   
     try {
       return new Promise((resolve, reject) => {
@@ -108,8 +106,7 @@ const createUser = async (userPayload) => {
               movieId: result.insertId,
               title,
               publishingYear,
-              imageUrl,
-              userId,
+              imageUrl
             };
             console.log('Insert movie successful:', insertedData);
             resolve(insertedData);
@@ -121,37 +118,6 @@ const createUser = async (userPayload) => {
       throw error;
     }
   };
-
-//   const createMovie = async (moviePayload) => {
-//     const { user_uuid, title, publishingYear, imageUrl } = moviePayload;
-//     const uuid = uuidv4();
-  
-//     const sql = 'INSERT INTO movie (uuid,user_uuid, title, publishing_year, image_url) VALUES (?, ?, ?, ?, ?)';
-  
-//     try {
-//       return new Promise((resolve, reject) => {
-//         db.query(sql, [uuid,user_uuid, title, publishingYear, imageUrl], (err, result) => {
-//           if (err) {
-//             console.error('Error inserting movie: ' + err);
-//             reject(new Error(err.message));
-//           } else {
-//             const insertedData = {
-//               movieId: result.insertId,
-//               uuid: uuid.toString('hex'),
-//               title,
-//               publishingYear,
-//               imageUrl,
-//             };
-//             console.log('Insert movie successful:', insertedData);
-//             resolve(insertedData);
-//           }
-//         });
-//       });
-//     } catch (error) {
-//       console.error('Error inserting movie:', error);
-//       throw error;
-//     }
-//   };
 
   const getUserByIdOrToken = (userId = null, token = null) => {
     // console.log('userId:++++', userId);
@@ -175,6 +141,26 @@ const createUser = async (userPayload) => {
     });
   };
 
+  const getMovie = ({limtStart , limitEnd}) => {
+    const sql = 'SELECT * FROM movie order by id desc limit ' + limtStart + ', ' + limitEnd ;
+     
+    return new Promise((resolve, reject) => {
+      db.query(sql, (err, result) => {
+        if (err) {
+          console.error('Error retrieving user by ID:', err);
+          reject(err);
+        } else {
+          // If a user is found, return the user data
+          if (result && result.length > 0) {
+            resolve(result);
+          } else {
+            resolve(null);
+          }
+        }
+      });
+    });
+  };
+
 
 
 
@@ -185,5 +171,6 @@ module.exports = {
     getUserByEmail,
     updateUserToken,
     createMovie,
-    getUserByIdOrToken
+    getUserByIdOrToken,
+    getMovie
   }
