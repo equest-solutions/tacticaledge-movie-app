@@ -30,7 +30,7 @@ function MovieList() {
       try {
          const start = (activePage - 1) * RES_PER_PAGE + 1;
          const end = activePage * RES_PER_PAGE;
-         const url = GET_MOVIE_LIST_URL + `?user_uuid=${userId}&limtStart=${start}&limitEnd=${end}`;
+         const url = GET_MOVIE_LIST_URL + `?user_uuid=${userId}&limitStart=${start}&limitEnd=${end}`;
 
          const response = await fetch(url, {
             method: 'GET',
@@ -58,6 +58,7 @@ function MovieList() {
 
    useEffect(() => {
       if (!movieList) getMoviesList();
+      dispatch(movieActions.setActivePage(activePage));
    }, [activePage]);
 
    function pageChangeHandler(payload: PageChangePayload) {
@@ -85,6 +86,7 @@ function MovieList() {
                      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:mt-12 mt-11">
                         {movieList.map((movie: any) => (
                            <MovieCard
+                              movieId={movie.uuid}
                               key={movie.uuid}
                               title={movie.title}
                               year={movie.publish_year}

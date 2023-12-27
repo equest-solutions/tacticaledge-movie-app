@@ -12,7 +12,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
 
    useEffect(() => {
       if(!authToken) {
-         navigate('/login');
+         navigate('/');
       }
    }, [])
 

@@ -21,7 +21,7 @@ function MovieCard({ img, title, year, movieId }: PropsWithChildren<Movie>) {
             <TextLarge className="text-center">Edit</TextLarge>
          </div>
          <div className="overflow-hidden rounded-xl card-image mb-5">
-            <img className="w-full max-w-full" src={img} alt={title} />
+            <img className="w-full max-w-full h-full object-cover" src={img} alt={title} />
          </div>
          <div className="px-3">
             <TextLarge className="mb-3">{title}</TextLarge>
