@@ -1,4 +1,4 @@
-const userModel = require('../models/UserModel');
+const userModel = require('../models/MovieModel');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const crypto = require('crypto');
@@ -19,8 +19,8 @@ const generateToken = (userJson) => {
     id: userJson.id,
     email: userJson.email
   };
-  // Set the expiration time to one hour (1 hr)
-  const expiresIn = '1h';
+  // Set the expiration time to one day (1 day)
+  const expiresIn = '1d';
 
   // Create the JWT token with the user ID and expiration time
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });

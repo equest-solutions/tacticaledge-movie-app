@@ -1,35 +1,15 @@
 const bcrypt = require('bcrypt');
-const userModel = require('../models/UserModel')
+const userModel = require('../models/MovieModel')
 const authMiddleware = require('../middlewares/authentication');
-const aws = require('aws-sdk');
-const AWS = require('aws-sdk'); // Import the AWS SDK
+const AWS = require('aws-sdk');
 const multer = require('multer');
 const fs = require('fs');
 
-const path = require('path');
-
 const Form = require('../form');
- 
  
 // const multerS3 = require('multer-s3');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config()
-
-
-
-// Configure AWS
-const s3 = new aws.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION,
-  });
-// console.log('s3@@@@@@', s3);  
-
-// Multer configuration for handling file uploads
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-
-console.log('upload', upload);
 
 
 const welcome = async (req, res) => {
@@ -37,76 +17,49 @@ const welcome = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    try {
-      const { email, password } = req.body
+  try {
+      const { email, password } = req.body;
 
       if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
+          return res.status(400).json({ error: 'Email and password are required' });
       }
 
-    // Check if the user already exists in the database
-    const existingUser = await userModel.getUserByEmail(email);
-    console.log('existingUser:-', existingUser);
+      // Check if the user already exists
+      const existingUser = await userModel.getUserByEmail(email);
 
-    let isTokeValid;
-    if (existingUser) {
-      // Check if the existing token is still valid
-      const existingToken = existingUser.token;
-      console.log('existingToken', existingToken);
-      const resToken = authMiddleware.isTokenValid(existingToken);
-      console.log('resToken++++', resToken);
-      isTokeValid = resToken.success;
-      let newToken = existingToken;
-      const existingUserData = {
-        id: existingUser.id,
-        uuid: existingUser.uuid,
-        email: existingUser.email,
-      };
+      let isTokenValid;
+      if (existingUser) {
+          // Check if the existing token is still valid
+          const existingToken = existingUser.token;
+          const resToken = authMiddleware.isTokenValid(existingToken);
+          isTokenValid = resToken.success;
+          let newToken = existingToken;
 
-      console.log('existingUserData:-', existingUserData);
+          const existingUserData = {
+              id: existingUser.id,
+              uuid: existingUser.uuid,
+              email: existingUser.email,
+          };
 
-      if (!isTokeValid) {
-        console.log('check is not valid token');
-        // Token is still not valid, generate new token
-        newToken = await authMiddleware.generateToken(existingUser);
+          if (!isTokenValid) {
+              // Token is not valid, generate a new token and update it in the database
+              newToken = await authMiddleware.generateToken(existingUser);
+              const resultToken = await userModel.updateUserToken(existingUser.id, newToken);
+              return res.status(200).json({ data: { ...existingUserData, token: resultToken.token } });
+          }
+
+          // Token is still valid, return the existing user's data
+          return res.status(200).json({ data: { ...existingUserData, token: existingToken } });
       }
 
-      console.log('newToken+++++', newToken);
-      const resultToken = await userModel.updateUserToken(existingUser.id, newToken);
-      console.log('resultToken+++', resultToken);
+      // If the user does not exist, return an error
+      return res.status(404).json({ error: 'User not found' });
 
-      return res.status(200).json({ data: { ...existingUserData, token: resultToken.token } });
-    }
-    
-    // Hash the password before storing it in the database
-    const hashedPassword = await bcrypt.hash(password, 10);  
-    console.log('hashedPassword', hashedPassword);
-
-    // Insert user into the database using the model
-    const result = await userModel.createUser({
-        email,
-        password: hashedPassword,
-      });
-
-
-    console.log('result++++', result);
-
-    // Generate JWT token
-    const generateToken = await authMiddleware.generateToken(result);
-    console.log('generateToken', generateToken);
-
-    // Update user's token in the database
-    const resultToken = await userModel.updateUserToken(result.userId, generateToken);
-
-
-    res.status(201).json({ data: { ...result, token: resultToken.token } });
-  
-      // res.status(200).json({ data: { email: result.email , token: resultToken.token } });
-    } catch (error) {
-      console.error('Error during login:', error.message)
-      res.status(500).json({ error: 'Internal Server Error' })
-    }
-}
+  } catch (error) {
+      console.error('Error during login:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 
 const createMovie = async (req, res) => {
@@ -118,7 +71,6 @@ const createMovie = async (req, res) => {
           
           const { user_uuid, title, publishingYear } = formObject.fields;
             
-        
             AWS.config.update({
                 accessKeyId: process.env.AWS_ACCESS_KEY_ID,
                 secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -199,12 +151,6 @@ const updateMovie = async (req, res) => {
           if (!title || !publishingYear) {
             return res.status(400).json({ error: 'Title and publishingYear are required' });
           }
-
-
-          // Check if an image file is uploaded
-            // if (!req.file) {
-            //   return res.status(400).json({ error: 'Image file is required' });
-            // }
                     
             AWS.config.update({
                 accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -267,8 +213,6 @@ const updateMovie = async (req, res) => {
   }
 }
 
-
-
 const getMovies = async (req, res) => {
    
   try {
@@ -294,9 +238,6 @@ const logout = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' })
   }  
 }  
-
-
-    
 
   module.exports = {
     welcome,

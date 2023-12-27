@@ -121,7 +121,7 @@ const createUser = async (userPayload) => {
 
   const getUserByIdOrToken = (userId = null, token = null) => {
     // console.log('userId:++++', userId);
-    // console.log('token: getUserByIdOrToken ', token);
+    console.log('token: getUserByIdOrToken ', token);
     const sql = 'SELECT * FROM user WHERE ' + (userId ? 'id = ?' : 'token = ?');
   
     return new Promise((resolve, reject) => {
@@ -180,7 +180,7 @@ const createUser = async (userPayload) => {
   const getMovie = ({ user_uuid, limitStart, limitEnd }) => {
     const sql = 'SELECT * FROM movie WHERE user_uuid = ? ORDER BY id ASC LIMIT ?, ?';
     return new Promise((resolve, reject) => {
-      db.query(sql, [user_uuid, parseInt(limitStart, 10), parseInt(limitEnd, 10)], (err, result) => {
+      db.query(sql, [user_uuid, parseInt(limitStart, 10) - 1, parseInt(limitEnd, 10) - 1], (err, result) => {
         if (err) {
           console.error('Error retrieving movies:', err);
           reject(err);
