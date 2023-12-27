@@ -19,7 +19,7 @@ export const loginFormElements: FormElement[] = [
 ];
 //*********************  login static data end ********************//
 
-//*********************  Movie Form static data start ********************//
+//*********************  Movie static data start ********************//
 export const movieFormElements: FormElement[] = [
    {
       id: 'title',
@@ -32,13 +32,19 @@ export const movieFormElements: FormElement[] = [
       type: 'number',
    },
 ];
-//*********************  Movie Form static data end ********************//
+
+export const RES_PER_PAGE = 8;
+//*********************  Movie static data end ********************//
 
 
 //*********************  API URL data end ********************//
 const BASE_URL = 'http://localhost:8000/';
+export const AWS_URL = 'https://s3movieapp.s3.amazonaws.com/';
 
 export const LOGIN_URL = BASE_URL + 'api/login';
+export const CREATE_MOVIE_URL = BASE_URL + 'api/create-movie';
+export const GET_MOVIE_LIST_URL = BASE_URL + 'api/get-movies';
 //*********************  API URL data end ********************//
 
+'?limtStart=1&limitEnd=10'
 

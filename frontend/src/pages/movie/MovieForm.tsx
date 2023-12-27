@@ -1,4 +1,4 @@
-import { useRef, useState, FormEvent, useEffect } from 'react';
+import { useRef, useState, FormEvent, useEffect, PropsWithChildren } from 'react';
 import UploadIcon from '../../components/icon/UploadIcon';
 import TextSmall from '../../components/typography/TextSmall';
 import TextInput from '../../components/TextInput';
@@ -20,7 +20,11 @@ const formErrorInitialState: FormState = {
    formValid: true,
 };
 
-function MovieForm() {
+interface MovieFormProps {
+   onSubmit: Function;
+}
+
+function MovieForm({ onSubmit }: PropsWithChildren<MovieFormProps>) {
    const fileInput = useRef(null);
    const [formError, setFormError] = useState(formErrorInitialState);
    const [uploadImage, setUploadImage] = useState({
@@ -106,7 +110,11 @@ function MovieForm() {
 
       if (!isFormValid) return;
 
-      console.log(data);
+      onSubmit({
+         img: uploadImage.blob,
+         title: data.title,
+         year: data.year,
+      });
    }
 
    function RenderImageInput() {
@@ -118,7 +126,7 @@ function MovieForm() {
          );
       else
          return (
-            <div className='w-full max-w-[473px]'>
+            <div className="w-full max-w-[473px]">
                <div
                   draggable
                   onClick={() => fileInput.current && (fileInput.current as HTMLInputElement).click()}
@@ -134,7 +142,7 @@ function MovieForm() {
                   </div>
                   <input onChange={fileInputHandler} ref={fileInput} type="file" hidden />
                </div>
-               {formError.image && <p className='form-error'>Please upload an image</p>}
+               {formError.image && <p className="form-error">Please upload an image</p>}
             </div>
          );
    }
