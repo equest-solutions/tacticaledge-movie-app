@@ -143,11 +143,13 @@ const createMovie = async (req, res) => {
               rs.on('close', () => {
                 console.log('CLOSE')
               })
-
+            
             const params = {
                 Bucket: process.env.S3_BUCKET_NAME,
                 Key: `${uuidv4()}-${uploadImageName}`,
                 Body: rs,
+                ContentType: formObject.files.image[0].headers['content-type'], 
+                ACL: 'public-read'
               };
             console.log('params++++', params);  
 
@@ -232,9 +234,11 @@ const updateMovie = async (req, res) => {
                 Bucket: process.env.S3_BUCKET_NAME,
                 Key: `${uuidv4()}-${uploadImageName}`,
                 Body: rs,
+                ContentType: formObject.files.image[0].headers['content-type'], 
+                ACL: 'public-read'
               };
 
-               
+              console.log('params', params);   
               s3.upload(params, async (err, data) => {
                 if (err) {
                   return res.status(500).send(err.message);
@@ -268,9 +272,8 @@ const updateMovie = async (req, res) => {
 const getMovies = async (req, res) => {
    
   try {
-    console.log('in get movies')
-    const {limtStart , limitEnd} = req.params;
-        const result = await userModel.getMovie({limtStart , limitEnd});
+    const {user_uuid, limitStart , limitEnd} = req.query;
+        const result = await userModel.getMovie({user_uuid, limitStart , limitEnd});
         res.status(200).json({ data: result });
     } catch (error) {
         console.error('Error during get movie list:', error.message)
