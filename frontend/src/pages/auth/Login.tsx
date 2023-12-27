@@ -5,6 +5,10 @@ import Button from '../../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import HeadingLarge from '../../components/typography/HeadingLarge';
 import { isValid } from '../../helper/formValidator';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../store/authSlice';
+import TextSmall from '../../components/typography/TextSmall';
+import ThemeLoadingSpinner from '../../components/ui/loading-indicator/ThemeLoadingSpinner';
 
 interface FormState {
    email: boolean;
@@ -20,8 +24,11 @@ const formErrorInitialState: FormState = {
 
 function Login() {
    const navigate = useNavigate();
+   const dispatch = useDispatch();
 
    const [formError, setFormError] = useState(formErrorInitialState);
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState(null);
 
    function inputChangeHandler(key: string, e: FormEvent<HTMLInputElement>) {
       const value = (e.target as HTMLInputElement).value;
@@ -61,22 +68,41 @@ function Login() {
          localStorage.removeItem('password');
       }
 
-      fetch(LOGIN_URL, {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-         body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-         }),
-      })
-         .then((res) => {
-            return res.json();
-         })
-         .then((data) => {
-            navigate('/movies');
+      loginHandler({
+         email: data.email,
+         password: data.password,
+      });
+   }
+
+   async function loginHandler(payload: any) {
+      setError(null);
+      setIsLoading(true);
+      try {
+         const response = await fetch(LOGIN_URL, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
          });
+
+         const data = await response.json();
+
+         if (!response.ok) {
+            throw new Error('Something went wrong!');
+         }
+
+         if (data) {
+            dispatch(authActions.loginUser({
+               token: data.data.token,
+               userId: data.data.uuid,
+            }));
+            navigate('/movies');
+         }
+      } catch (error: any) {
+         setError(error.message);
+      }
+      setIsLoading(false);
    }
 
    return (
@@ -108,7 +134,10 @@ function Login() {
                            Remember me
                         </label>
                      </div>
-                     <Button size="block">Login</Button>
+                     {error && <div>
+                        <TextSmall className='text-danger'>{error}</TextSmall>
+                     </div>}
+                     {isLoading ? <ThemeLoadingSpinner /> : <Button size="block">Login</Button>}
                   </div>
                </form>
             </div>
