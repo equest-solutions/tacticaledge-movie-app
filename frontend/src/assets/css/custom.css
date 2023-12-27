@@ -80,3 +80,10 @@ input[type=number] {
    cursor: pointer;
    background: linear-gradient(0deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.09) 100%), rgba(8, 41, 53, 0.55);
 }
+
+
+@media screen and (min-width: 1400px) {
+   .container {
+      max-width: 1248px !important;
+   }
+}

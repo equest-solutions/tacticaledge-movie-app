@@ -110,7 +110,17 @@ function MovieList() {
                <ThemeLoadingSpinner />
             </div>
          ) : (
-            <ListFallback />
+            <>
+               <div className="grid grid-cols-4 px-12 gap-6 md:mt-12 mt-11">
+                  <MovieCard
+                     movieId='234240234-3452-34523453'
+                     title="Hello"
+                     year="1993"
+                     img="https://s3movieapp.s3.amazonaws.com/66dcc38c-b711-408a-83cf-63185db1ff37-HotLavaposter.jpg"
+                  />
+               </div>
+               <ListFallback />
+            </>
          )}
       </>
    );

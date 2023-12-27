@@ -53,6 +53,7 @@ export interface Movie {
    img: string;
    title: string;
    year: string;
+   movieId?: string;
 }
 
 export interface MovieStore {

@@ -1,10 +1,4 @@
-interface FormElement {
-   id: string;
-   label: string;
-   type: string;
-}
-
-export const loginFormElements: FormElement[] = [
+export const loginFormElements = [
    {
       id: 'email',
       label: 'Email',
@@ -21,8 +15,8 @@ export const RES_PER_PAGE = 8;
 
 
 //*********************  API URL data start ********************//
-const BASE_URL = 'http://localhost:8000/';
-export const AWS_URL = 'https://s3movieapp.s3.amazonaws.com/';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+export const AWS_URL = import.meta.env.VITE_AWS_URL;
 
 export const LOGIN_URL = BASE_URL + 'api/login';
 export const CREATE_MOVIE_URL = BASE_URL + 'api/create-movie';

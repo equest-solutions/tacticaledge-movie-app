@@ -58,11 +58,23 @@ function MovieForm({ onSubmit }: PropsWithChildren<MovieFormProps>) {
    }
 
    function imgParseHandler(file: any) {
+      const fileSize = file.size;
+      const fileSizeKB = fileSize / 1024 ** 2;
+
+      if (fileSizeKB < 2) {
+         alert('Please provide image greater than 2MB!');
+         return;
+      }
+
       if (/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(file.name)) {
          const newImage = new Image();
          newImage.src = URL.createObjectURL(file);
 
          newImage.onload = () => {
+            if (newImage.naturalWidth < 532 || newImage.naturalHeight < 800) {
+               alert('Please provide image greater than 532x800 size!');
+               return;
+            }
             const imgObj = {
                src: newImage.src,
                blob: file,
@@ -177,7 +189,7 @@ function MovieForm({ onSubmit }: PropsWithChildren<MovieFormProps>) {
                   {isMobileView && <RenderImageInput />}
                </div>
                <div className="flex space-x-5 mt-8 md:mt-10">
-                  <ButtonOutline className="grow" type="button">
+                  <ButtonOutline isLink linkPath="/movies" className="grow">
                      Cancel
                   </ButtonOutline>
                   <Button className="grow">Submit</Button>
