@@ -16,12 +16,13 @@ function MovieList() {
    const dispatch = useDispatch();
    const token = useSelector((state: IRootState) => state.auth.token);
    const userId = useSelector((state: IRootState) => state.auth.userId);
+   const modified = useSelector((state: IRootState) => state.movie.isModified);
    const [activePage, setActivePage] = useState(1);
    const movieList = useSelector((state: IRootState) => (state.movie?.moviesList ? state.movie?.moviesList[activePage] : null));
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
-   const [totalPages, setTotalPages] = useState(2);
+   const [totalPages, setTotalPages] = useState(1);
 
    async function getMoviesList() {
       setError(null);
@@ -46,9 +47,11 @@ function MovieList() {
             dispatch(
                movieActions.setMoviesList({
                   page: activePage,
-                  list: data.data,
+                  list: data.data.movies,
                })
             );
+            const totalPages = Math.ceil(data.data.totalCount / RES_PER_PAGE);
+            setTotalPages(totalPages);
          }
       } catch (error: any) {
          setError(error.message);
@@ -57,7 +60,7 @@ function MovieList() {
    }
 
    useEffect(() => {
-      if (!movieList) getMoviesList();
+      if (!movieList || modified) getMoviesList();
       dispatch(movieActions.setActivePage(activePage));
    }, [activePage]);
 

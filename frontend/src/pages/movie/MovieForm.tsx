@@ -5,6 +5,7 @@ import TextInput from '../../components/TextInput';
 import ButtonOutline from '../../components/button/ButtonOutline';
 import Button from '../../components/button/Button';
 import { isValid } from '../../helper/formValidator';
+import Swal from 'sweetalert2'
 
 interface FormState {
    title: boolean;
@@ -63,7 +64,14 @@ function MovieForm({ onSubmit, defaultState }: PropsWithChildren<MovieFormProps>
       const fileSizeKB = fileSize / 1024 ** 2;
 
       if (fileSizeKB > 2) {
-         alert('Please provide image less than 2MB!');
+         Swal.fire({
+            title: "Please provide image less than 2MB!",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            background: '#2daf6e',
+            timer: 3000,
+         });
          return;
       }
 
@@ -73,7 +81,7 @@ function MovieForm({ onSubmit, defaultState }: PropsWithChildren<MovieFormProps>
 
          newImage.onload = () => {
             if (newImage.naturalWidth < 266 || newImage.naturalHeight < 400) {
-               alert('Please provide image greater than 532x800 size!');
+               Swal.fire("Please provide image greater than 532x800 size!");
                return;
             }
             const imgObj = {

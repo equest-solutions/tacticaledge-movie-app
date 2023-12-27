@@ -3,25 +3,25 @@ import HeadingMedium from '../../components/typography/HeadingMedium';
 import MovieForm from './MovieForm';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { EDIT_MOVIE_URL } from '../../helper/config';
 import { IRootState } from '../../store';
 import ThemeLoadingSpinner from '../../components/ui/loading-indicator/ThemeLoadingSpinner';
 import TextPrimary from '../../components/typography/TextPrimary';
 import { Movie } from '../../typescript/interfaces/global';
+import { movieActions } from '../../store/movieSlice';
 
 function EditMovie() {
    const params = useParams();
    const movieId = params.movieId;
 
    const navigate = useNavigate();
+   const dispatch = useDispatch();
    const userId = useSelector((state: IRootState) => state.auth.userId);
    const token = useSelector((state: IRootState) => state.auth.token);
    const curPage = useSelector((state: IRootState) => state.movie.activePage);
    const movieList = useSelector((state: IRootState) => (state.movie?.moviesList ? state.movie?.moviesList[curPage] : null));
    const movie = movieList.find((mov: any) => mov.uuid === movieId);
-
-   console.log(movie);
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
@@ -54,6 +54,7 @@ function EditMovie() {
          }
 
          if (data) {
+            dispatch(movieActions.setModified(true));
             navigate('/movies');
          }
       } catch (error: any) {

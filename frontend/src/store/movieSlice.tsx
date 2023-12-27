@@ -5,12 +5,14 @@ interface InitialState {
    moviesList: any;
    totalPages: number;
    activePage: number;
+   isModified: boolean;
 }
 
 const initialState: InitialState = {
    moviesList: null,
    totalPages: 0,
    activePage: 1,
+   isModified: false,
 };
 
 const movieSlice = createSlice({
@@ -20,11 +22,16 @@ const movieSlice = createSlice({
       setMoviesList(state, { payload }: PayloadAction<MovieStore>) {
          if (!state.moviesList) {
             state.moviesList = {};
-         } else (state.moviesList as any)[payload.page] = payload.list;
+         }
+         (state.moviesList as any)[payload.page] = payload.list;
+         state.isModified = false;
       },
       setActivePage(state, { payload }) {
          state.activePage = payload;
       },
+      setModified(state, {payload}) {
+         state.isModified = payload;
+      }
    },
 });
 
