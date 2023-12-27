@@ -63,9 +63,11 @@ function Login() {
       if (data.rememberLogin) {
          localStorage.setItem('email', data.email as string);
          localStorage.setItem('password', data.password as string);
+         localStorage.setItem('remember', data.rememberLogin as string);
       } else {
          localStorage.removeItem('email');
          localStorage.removeItem('password');
+         localStorage.removeItem('remember');
       }
 
       loginHandler({
@@ -129,7 +131,7 @@ function Login() {
                         </div>
                      ))}
                      <div className="space-x-3 flex items-center mx-auto w-fit">
-                        <input type="checkbox" name="rememberLogin" id="rememberLogin" className="form-checkbox" />
+                        <input defaultChecked={!!localStorage.getItem('remember')} type="checkbox" name="rememberLogin" id="rememberLogin" className="form-checkbox" />
                         <label className="text-sm" htmlFor="rememberLogin">
                            Remember me
                         </label>

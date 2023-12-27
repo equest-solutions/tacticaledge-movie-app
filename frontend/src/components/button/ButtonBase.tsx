@@ -19,13 +19,13 @@ function ButtonBase(props: PropsWithChildren<ButtonClassProps>) {
       <>
          {props.isLink ? (
             <NavLink
-               className={`${props.className} ${props.size && btnConfig[props.size]} btn`}
+               className={`${props.className ? props.className : ''} ${props.size ? btnConfig[props.size] : ''} btn`}
                to={props.linkPath}
             >
                {props.children}
             </NavLink>
          ) : (
-            <button {...props} onClick={props.onClick} className={`${props.className ? props.className : ''} ${props.size && btnConfig[props.size]} btn`}>
+            <button {...props} onClick={props.onClick} className={`${props.className ? props.className : ''} ${props.size ? btnConfig[props.size] : ''} btn`}>
                {props.children}
             </button>
          )}

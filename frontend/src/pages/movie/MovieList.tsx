@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Pagination from '../../components/Pagination';
-import Button from '../../components/button/Button';
 import ListFallback from './ListFallback';
 import MovieCard from '../../components/ui/MovieCard';
 import MoviesHeader from './MoviesHeader';
