@@ -22,9 +22,10 @@ const formErrorInitialState: FormState = {
 
 interface MovieFormProps {
    onSubmit: Function;
+   defaultState?: any;
 }
 
-function MovieForm({ onSubmit }: PropsWithChildren<MovieFormProps>) {
+function MovieForm({ onSubmit, defaultState }: PropsWithChildren<MovieFormProps>) {
    const fileInput = useRef(null);
    const [formError, setFormError] = useState(formErrorInitialState);
    const [uploadImage, setUploadImage] = useState({
@@ -61,8 +62,8 @@ function MovieForm({ onSubmit }: PropsWithChildren<MovieFormProps>) {
       const fileSize = file.size;
       const fileSizeKB = fileSize / 1024 ** 2;
 
-      if (fileSizeKB < 2) {
-         alert('Please provide image greater than 2MB!');
+      if (fileSizeKB > 2) {
+         alert('Please provide image less than 2MB!');
          return;
       }
 
@@ -71,7 +72,7 @@ function MovieForm({ onSubmit }: PropsWithChildren<MovieFormProps>) {
          newImage.src = URL.createObjectURL(file);
 
          newImage.onload = () => {
-            if (newImage.naturalWidth < 532 || newImage.naturalHeight < 800) {
+            if (newImage.naturalWidth < 266 || newImage.naturalHeight < 400) {
                alert('Please provide image greater than 532x800 size!');
                return;
             }
@@ -174,6 +175,7 @@ function MovieForm({ onSubmit }: PropsWithChildren<MovieFormProps>) {
                      name="title"
                      type="text"
                      label="Title"
+                     defaultValue={defaultState?.title || ''}
                   />
                   <TextInput
                      onChange={(e) => {
@@ -185,6 +187,7 @@ function MovieForm({ onSubmit }: PropsWithChildren<MovieFormProps>) {
                      name="year"
                      type="number"
                      label="Publishing year"
+                     defaultValue={defaultState?.publish_year || ''}
                   />
                   {isMobileView && <RenderImageInput />}
                </div>

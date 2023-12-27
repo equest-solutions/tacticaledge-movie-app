@@ -14,10 +14,14 @@ function EditMovie() {
    const params = useParams();
    const movieId = params.movieId;
 
-
    const navigate = useNavigate();
    const userId = useSelector((state: IRootState) => state.auth.userId);
    const token = useSelector((state: IRootState) => state.auth.token);
+   const curPage = useSelector((state: IRootState) => state.movie.activePage);
+   const movieList = useSelector((state: IRootState) => (state.movie?.moviesList ? state.movie?.moviesList[curPage] : null));
+   const movie = movieList.find((mov: any) => mov.uuid === movieId);
+
+   console.log(movie);
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
@@ -62,7 +66,7 @@ function EditMovie() {
       <div className="container px-6">
          <div className="pt-12 pb-12">
             <HeadingMedium className='mb-11 md:mb-12'>Edit</HeadingMedium>
-            {isLoading ? <ThemeLoadingSpinner /> : <MovieForm onSubmit={editMovieHandler} />}
+            {isLoading ? <ThemeLoadingSpinner /> : <MovieForm defaultState={movie} onSubmit={editMovieHandler} />}
             {error && <div><TextPrimary className='text-danger mx-auto mt-5 text-center'>{error}</TextPrimary></div>}
          </div>
       </div>
