@@ -177,30 +177,19 @@ const createUser = async (userPayload) => {
     }
   }
 
-  const getMovie = ({limtStart , limitEnd}) => {
-    const sql = 'SELECT * FROM movie order by id desc limit ' + limtStart + ', ' + limitEnd ;
-     
+  const getMovie = ({ user_uuid, limitStart, limitEnd }) => {
+    const sql = 'SELECT * FROM movie WHERE user_uuid = ? ORDER BY id ASC LIMIT ?, ?';
     return new Promise((resolve, reject) => {
-      db.query(sql, (err, result) => {
+      db.query(sql, [user_uuid, parseInt(limitStart, 10), parseInt(limitEnd, 10)], (err, result) => {
         if (err) {
-          console.error('Error retrieving user by ID:', err);
+          console.error('Error retrieving movies:', err);
           reject(err);
         } else {
-          // If a user is found, return the user data
-          if (result && result.length > 0) {
-            resolve(result);
-          } else {
-            resolve(null);
-          }
+          resolve(result);
         }
       });
     });
   };
-
-
-
-
-
 
 module.exports = {
     createUser,
