@@ -177,19 +177,36 @@ const createUser = async (userPayload) => {
     }
   }
 
-  const getMovie = ({ user_uuid, limitStart, limitEnd }) => {
+const getMovie = ({ user_uuid, limitStart, limitEnd }) => {
     const sql = 'SELECT * FROM movie WHERE user_uuid = ? ORDER BY id ASC LIMIT ?, ?';
+    const countSql = 'SELECT COUNT(*) AS total FROM movie WHERE user_uuid = ?';
+
+    // Adjust the offset if limitStart is greater than 0
+    const offset = parseInt(limitStart, 10) > 0 ? parseInt(limitStart, 10) - 1 : 0;
+
     return new Promise((resolve, reject) => {
-      db.query(sql, [user_uuid, parseInt(limitStart, 10) - 1, parseInt(limitEnd, 10) - 1], (err, result) => {
-        if (err) {
-          console.error('Error retrieving movies:', err);
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      });
+        // First, execute the query to get paginated movie data
+        db.query(sql, [user_uuid, offset, parseInt(limitEnd, 10)], (err, result) => {
+            if (err) {
+                console.error('Error retrieving movies:', err);
+                reject(err);
+            } else {
+                // Then, execute the query to get the total count of movies
+                db.query(countSql, [user_uuid], (countErr, countResult) => {
+                    if (countErr) {
+                        console.error('Error retrieving total count:', countErr);
+                        reject(countErr);
+                    } else {
+                        // Include the total count in the response
+                        const totalCount = countResult[0].total;
+                        resolve({ movies: result, totalCount });
+                    }
+                });
+            }
+        });
     });
-  };
+};
+
 
 module.exports = {
     createUser,
