@@ -3,6 +3,7 @@ import BGVector from '../components/ui/BGVector';
 import {useSelector} from 'react-redux';
 import { IRootState } from '../store';
 import { useNavigate } from 'react-router-dom';
+import BGVectorMb from '../components/ui/BGVectorMb';
 
 const AppLayout = ({ children }: PropsWithChildren) => {
 
@@ -19,7 +20,10 @@ const AppLayout = ({ children }: PropsWithChildren) => {
       <main className="min-h-screen bg-dark relative">
 
          {/* bottom curves vector */}
-         <div className="absolute bottom-0 left-0 w-full icon">
+         <div className="absolute md:hidden bottom-0 left-0 w-full icon">
+            <BGVectorMb />
+         </div>
+         <div className="absolute hidden md:block bottom-0 left-0 w-full icon">
             <BGVector />
          </div>
          

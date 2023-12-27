@@ -15,6 +15,7 @@ type PageChangePayload = 'prev' | 'next' | number;
 function MovieList() {
    const dispatch = useDispatch();
    const token = useSelector((state: IRootState) => state.auth.token);
+   const userId = useSelector((state: IRootState) => state.auth.userId);
    const [activePage, setActivePage] = useState(1);
    const movieList = useSelector((state: IRootState) => (state.movie?.moviesList ? state.movie?.moviesList[activePage] : null));
 
@@ -29,7 +30,7 @@ function MovieList() {
       try {
          const start = (activePage - 1) * RES_PER_PAGE + 1;
          const end = activePage * RES_PER_PAGE;
-         const url = GET_MOVIE_LIST_URL + `?limtStart=${start}&limitEnd=${end}`;
+         const url = GET_MOVIE_LIST_URL + `?user_uuid=${userId}&limtStart=${start}&limitEnd=${end}`;
 
          const response = await fetch(url, {
             method: 'GET',
