@@ -141,6 +141,42 @@ const createUser = async (userPayload) => {
     });
   };
 
+
+  const updateMovie = (updateMovieData) => {
+    const { user_uuid, title, publishingYear, imageUrl } = updateMovieData;
+  
+    const sql = 'UPDATE movie SET title = ?, publish_year = ?, image = ? WHERE user_uuid = ?';
+
+    console.log("SQL++++", sql);
+
+   console.log('SQL Query:', sql, 'Values:', [user_uuid, title, publishingYear, imageUrl]);
+  
+    try {
+      return new Promise((resolve, reject) => {
+        db.query(sql, [title, publishingYear, imageUrl, user_uuid], (err, result) => {
+          if (err) {
+            console.error('Error updating movie: ' + err.message);
+            reject({ error: err.message });
+          } else {
+            const updatedData = {
+              user_uuid,
+              title,
+              publishingYear,
+              imageUrl,
+              affectedRows: result.affectedRows,
+              changedRows: result.changedRows
+            };
+            console.log('Update movie successful:', updatedData);
+            resolve(updatedData);
+          }
+        });
+      });
+    } catch (error) {
+      console.error('Error updating movie data:', error);
+      throw error;
+    }
+  }
+
   const getMovie = ({limtStart , limitEnd}) => {
     const sql = 'SELECT * FROM movie order by id desc limit ' + limtStart + ', ' + limitEnd ;
      
@@ -171,6 +207,7 @@ module.exports = {
     getUserByEmail,
     updateUserToken,
     createMovie,
+    updateMovie,
     getUserByIdOrToken,
     getMovie
   }
