@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
+import { DetailedHTMLProps, InputHTMLAttributes, MouseEventHandler } from 'react';
 
 // * general types
 export type Size = 'sm' | 'md' | 'lg' | 'block';
@@ -36,24 +36,26 @@ export interface IconProps {
 interface LinkPresent extends CustomClassProps {
    isLink?: true;
    linkPath: string;
+   onClick?: any;
 }
 
 interface LinkAbsent extends CustomClassProps {
    isLink?: false | undefined;
    type?: 'button' | 'submit';
+   onClick?: Function;
 }
 
 export type ButtonClassProps = LinkPresent | LinkAbsent;
 
-// * avatar types
+// * Movie types
 
-export type ImgSize = 'sm' | 'md' | 'lg';
-
-export interface AvatarProps extends CustomClassProps {
+export interface Movie {
    img: string;
-   imgSize?: ImgSize;
    title: string;
-   titleClass?: string;
-   desc?: string;
-   descClass?: string;
+   year: string;
+}
+
+export interface MovieStore {
+   page: number | string;
+   list: Movie[];
 }
