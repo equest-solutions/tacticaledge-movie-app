@@ -24,5 +24,6 @@ jobs:
         working-directory: /var/www/html/tacticaledge-movie-app/frontend/
         run: |
           echo ${{ secrets.ROOT_PASSWORD }} | su git
+          sudo nvm use 18.18.2
           sudo npm install --force
           sudo npm run build
