@@ -9,11 +9,14 @@ import { AWS_URL, GET_MOVIE_LIST_URL, RES_PER_PAGE } from '../../helper/config';
 import ThemeLoadingSpinner from '../../components/ui/loading-indicator/ThemeLoadingSpinner';
 import TextPrimary from '../../components/typography/TextPrimary';
 import { movieActions } from '../../store/movieSlice';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 type PageChangePayload = 'prev' | 'next' | number;
 
 function MovieList() {
    const dispatch = useDispatch();
+   const navigate = useNavigate();
    const token = useSelector((state: IRootState) => state.auth.token);
    const userId = useSelector((state: IRootState) => state.auth.userId);
    const modified = useSelector((state: IRootState) => state.movie.isModified);
@@ -41,9 +44,26 @@ function MovieList() {
             },
          });
          const data = await response.json();
+         console.log(data, response);
+         if(!data.status) {
+            console.log('logged out')
+            if(response.status === 401) {
+               Swal.fire({
+                  title: 'Sorry! You have been logged out! Please login again',
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  background: '#EB5757',
+                  timer: 3000,
+               });
+               navigate('/');
+               return;
+            }
+            else throw new Error(data.message);
+         }
          if (!response.ok) {
             throw new Error('Something went wrong!');
-         }
+         } 
          if (data) {
             let list = data.data.movies;
             // if(list.length > RES_PER_PAGE) list = list.slice(0,RES_PER_PAGE); // this is done to solve an issue coming from backend.

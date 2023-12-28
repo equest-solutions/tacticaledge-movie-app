@@ -4,7 +4,7 @@ import MovieForm from './MovieForm';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { EDIT_MOVIE_URL } from '../../helper/config';
+import { EDIT_MOVIE_URL, GET_MOVIE_DETAILS_URL } from '../../helper/config';
 import { IRootState } from '../../store';
 import ThemeLoadingSpinner from '../../components/ui/loading-indicator/ThemeLoadingSpinner';
 import TextPrimary from '../../components/typography/TextPrimary';
@@ -25,6 +25,36 @@ function EditMovie() {
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
+
+   async function getMovieDetails() {
+      setError(null);
+      setIsLoading(true);
+
+      const url = GET_MOVIE_DETAILS_URL + movieId;
+
+      try {
+         const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({uuid: movieId}),
+            headers: {
+               token: token!,
+            },
+         });
+
+         const data = await response.json();
+         console.log(data);
+         if (!response.ok) {
+            throw new Error('Something went wrong!');
+         }
+
+         if (data) {
+            
+         }
+      } catch (error: any) {
+         setError(error.message);
+      }
+      setIsLoading(false);
+   }
 
    async function editMovieHandler(payload: Movie) {
       setError(null);
