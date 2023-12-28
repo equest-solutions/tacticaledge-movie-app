@@ -23,6 +23,6 @@ jobs:
       - name: Install Dependencies and Build
         working-directory: /var/www/html/tacticaledge-movie-app/frontend/
         run: |
-          su git
+          echo ${{ secrets.ROOT_PASSWORD }} | su git
           sudo npm install --force
           sudo npm run build
