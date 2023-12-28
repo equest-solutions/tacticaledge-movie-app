@@ -237,16 +237,16 @@ const getMovies = async (req, res) => {
 
 const getMovieDetails = async (req, res) => {
 
-  // try {
+  try {
     let movie_uuid = req.query.movie_uuid;
     const result = await userModel.getMovieDetails(movie_uuid);
     // console.log("result" , result)
     res.status(200).json({ status: true, data: result, message: "Movie details fetch successfully" });
 
-  // } catch (error) {
-  //   console.error('Error getMovieDetails:', error.message)
-  //   res.status(500).json({ status: false, message: error.message })
-  // }
+  } catch (error) {
+    console.error('Error getMovieDetails:', error.message)
+    res.status(500).json({ status: false, message: error.message })
+  }
 
 }
 
