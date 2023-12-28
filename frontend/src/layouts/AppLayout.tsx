@@ -13,6 +13,8 @@ const AppLayout = ({ children }: PropsWithChildren) => {
    useEffect(() => {
       if(!authToken) {
          navigate('/');
+      }else{
+            navigate('/movies');
       }
    }, [])
 
