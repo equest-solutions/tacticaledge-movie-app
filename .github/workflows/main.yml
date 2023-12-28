@@ -1,0 +1,24 @@
+name: Pull Data to Server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  phpunit:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          path: /var/www/html/tacticaledge-movie-app/frontend/
+
+      - name: Pull and Build
+        working-directory: /var/www/html/tacticaledge-movie-app/frontend/
+        run: |
+          echo "tacticaledge-movie-app-frontend"
+          git stash save --include-untracked "Custom message for my stash"
+          git pull
+          npm install
+          npm run build
