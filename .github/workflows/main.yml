@@ -15,5 +15,5 @@ jobs:
           sudo git stash save --include-untracked "Custom message for my stash"
           sudo git pull
           cd  /var/www/html/tacticaledge-movie-app/frontend/
-          npm i -f
+          npm install
           npm run build 
