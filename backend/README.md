@@ -3,6 +3,9 @@
 - Setup backend tacticaledge mobile app folder structure
 - Create backend tacticaledge mobile app folder structure after run ```npm init -y``` 
 
+##  Password Encryption Algorithm (Blowfish Encryption Algorithm)
+- Blowfish encryption algorithm
+The problems present in traditional UNIX password hashes led naturally to a new password scheme which we call bcrypt, referring to the Blowfish encryption algorithm. Bcrypt uses a 128-bit salt and encrypts a 192-bit magic value
 
 ## Available Scripts
 
@@ -13,7 +16,7 @@ In the project directory, you can run:
 ### `npm start` or `npm run start`
 
 Runs the app in the development mode.\
-Open [http://localhost:8000](http://localhost:8000) to view it in your browser.
+Open [http://localhost:81](http://localhost:81) to view it in your browser.
 
 You may also see any lint errors in the console.
 

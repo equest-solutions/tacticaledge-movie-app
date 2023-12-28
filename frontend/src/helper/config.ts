@@ -2,7 +2,7 @@ export const loginFormElements = [
    {
       id: 'email',
       label: 'Email',
-      type: 'email',
+      type: 'text',
    },
    {
       id: 'password',
