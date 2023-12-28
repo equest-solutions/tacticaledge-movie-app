@@ -16,6 +16,7 @@ jobs:
         working-directory: /var/www/html/tacticaledge-movie-app/frontend/
         run: |
           echo "tacticaledge-movie-app-frontend"
+          git config --global --add safe.directory /var/www/html/tacticaledge-movie-app
           git stash save --include-untracked "Custom message for my stash"
           git pull
           npm install
