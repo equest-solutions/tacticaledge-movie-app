@@ -17,11 +17,11 @@ jobs:
         run: |
           echo "tacticaledge-movie-app-frontend"
           cd /var/www/html/tacticaledge-movie-app/
-          sudo git stash save --include-untracked "Custom message for my stash"
-          sudo git pull
+          git stash save --include-untracked "Custom message for my stash"
+          git pull
 
       - name: Install Dependencies and Build
         working-directory: /var/www/html/tacticaledge-movie-app/frontend/
         run: |
-          sudo npm install --force
-          sudo npm run build
+          npm install --force
+          npm run build
