@@ -23,5 +23,6 @@ jobs:
       - name: Install Dependencies and Build
         working-directory: /var/www/html/tacticaledge-movie-app/frontend/
         run: |
+          sudo su 
           sudo npm install
           sudo npm run build
