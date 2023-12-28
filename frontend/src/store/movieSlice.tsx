@@ -10,7 +10,7 @@ interface InitialState {
 
 const initialState: InitialState = {
    moviesList: null,
-   totalPages: 0,
+   totalPages: 1,
    activePage: 1,
    isModified: false,
 };
@@ -24,13 +24,19 @@ const movieSlice = createSlice({
             state.moviesList = {};
          }
          (state.moviesList as any)[payload.page] = payload.list;
-         state.isModified = false;
+         if(Number(payload.page) === state.totalPages) state.isModified = false;
       },
       setActivePage(state, { payload }) {
          state.activePage = payload;
       },
+      setTotalPages(state, { payload }) {
+         state.totalPages = payload;
+      },
       setModified(state, {payload}) {
          state.isModified = payload;
+      },
+      deleteMovies(state) {
+         state.moviesList = null;
       }
    },
 });
