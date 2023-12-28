@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          path: /var/www/html/tacticaledge-movie-app/frontend/
+          path: /var/www/html/tacticaledge-movie-app/
 
       - name: Update code and build
         working-directory: /var/www/html/tacticaledge-movie-app/frontend/
