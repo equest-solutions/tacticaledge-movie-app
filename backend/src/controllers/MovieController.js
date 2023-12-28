@@ -50,7 +50,7 @@ const login = async (req, res) => {
 
       if (!isPasswordMatch) {
 
-        return res.status(200).json({ status: false, message: 'Email and password do not match' });
+        return res.status(200).json({ status: false, message: 'Email or password do not match' });
       }
 
       return res.status(200).json({ status: true, message: "Successfully Logged In", data: { ...existingUserData, token: existingToken } });
