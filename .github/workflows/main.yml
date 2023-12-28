@@ -14,5 +14,5 @@ jobs:
         run: |
           echo "tacticaledge-movie-app-frontend"
           sudo git stash save --include-untracked "Custom message for my stash"
-          sudo git pul
+          sudo git pull
           sudo pm2 restart all
