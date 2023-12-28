@@ -137,22 +137,22 @@ const createMovie = async (req, res) => {
 const updateMovie = async (req, res) => {
   try {
 
-    console.log(`title:- ${title}, publishingYear:- ${publishingYear}`)
-
-    if (!title || !publishingYear) {
-      return res.status(400).json({ status: false, error: 'Title and publishingYear are required' });
-    }
-
     const { movie_uuid } = req.params;
-    console.log("movie_uuid", movie_uuid)
     let formData = new Form(req);
     let formObject = await formData.parse();
+  
+    const { title, publishingYear } = formObject.fields;
+
+    if (!title || !publishingYear) {
+      return res.status(400).json({ error: 'Title and publishingYear are required' });
+    }
 
     let isFile = false;
 
     isFile = formObject.files.image[0].originalFilename ? true : false;
 
     if (isFile) {
+      const uploadImageName = formObject.files.image[0].originalFilename; 
       AWS.config.update({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -175,48 +175,46 @@ const updateMovie = async (req, res) => {
       rs.on('close', () => {
         console.log('CLOSE')
       })
-      
-    const params = {
-      Bucket: process.env.S3_BUCKET_NAME,
-      Key: `${uuidv4()}-${uploadImageName}`,
-      Body: rs,
-      ContentType: formObject.files.image[0].headers['content-type'],
-      ACL: 'public-read'
-    };
 
-    s3.upload(params, async (err, data) => {
-      if (err) {
-        return res.status(500).send(err.message);
-      }
-      console.log("Update File uploaded successfully", data);
-      try {
+      const params = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: `${uuidv4()}-${uploadImageName}`,
+        Body: rs,
+        ContentType: formObject.files.image[0].headers['content-type'],
+        ACL: 'public-read'
+      };
 
-        const result = await userModel.updateMovie({
-          movie_uuid,
-          title,
-          publishingYear,
-          imageUrl: data.Key,
-        });
+      s3.upload(params, async (err, data) => {
+        if (err) {
+          return res.status(500).send(err.message);
+        }
+        console.log("Update File uploaded successfully", data);
+        try {
 
-        res.status(200).json({ status: true, data: result , message : "Movie Updated Successfully" });
-      } catch (error) {
-        console.error('Error inserting movie:', error.message);
-        res.status(500).json({ status: false, message: error.message })
-      }
-    });
+          const result = await userModel.updateMovie({
+            movie_uuid,
+            title,
+            publishingYear,
+            imageUrl: data.Key,
+          });
 
-    }else{
+          res.status(200).json({ status: true, data: result, message: "Movie Updated Successfully" });
+        } catch (error) {
+          console.error('Error inserting movie:', error.message);
+          res.status(500).json({ status: false, message: error.message })
+        }
+      });
+
+    } else {
       const result = await userModel.updateMovie({
         movie_uuid,
         title,
         publishingYear,
-        imageUrl: null ,
+        imageUrl: null,
       });
 
-      res.status(200).json({ status: true, data: result , message : "Movie Updated Successfully" });
+      res.status(200).json({ status: true, data: result, message: "Movie Updated Successfully" });
     }
-
-    return res.send({ SDS: 23423423423 })
   } catch (error) {
     console.error('Error during update movie:', error.message)
     res.status(500).json({ status: false, message: error.message })
@@ -241,10 +239,10 @@ const getMovies = async (req, res) => {
 const getMovieDetails = async (req, res) => {
 
   try {
-
-    let movie_uuid = req.params.uuid;
+    let movie_uuid = req.body.uuid;
+    console.log("movie_uuid" , movie_uuid)
     const result = await userModel.getMovieDetails(movie_uuid);
-
+    console.log("result" , result)
     res.status(200).json({ status: true, data: result, message: "Movie details fetch successfully" });
 
   } catch (error) {
