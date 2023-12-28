@@ -53,12 +53,6 @@ module.exports = {
                200: '#474747',
                'dark-light': 'rgba(14,23,38,.15)',
             },
-            gray: {
-               DEFAULT: '#929292',
-               100: '#C8C8C8',
-               200: '#828282',
-               300: '#8B8B8B',
-            },
             white: {
                DEFAULT: '#ffffff',
                100: '#e0e6ed',
@@ -87,9 +81,6 @@ module.exports = {
             11: '80px',
             12: '120px',
             13: '160px',
-         },
-         boxShadow: {
-            '3xl': '0 2px 2px rgb(224 230 237 / 46%), 1px 6px 7px rgb(224 230 237 / 46%)',
          },
          fontSize: {
             xs: ['0.75rem', '1.33333'],
