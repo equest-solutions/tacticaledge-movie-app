@@ -14,7 +14,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
       if(!authToken) {
          navigate('/');
       }else{
-         navigate('/movies');
+            navigate('/movies');
       }
    }, [])
 
