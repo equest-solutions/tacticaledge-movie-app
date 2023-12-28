@@ -9,8 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Checkout code
-        working-directory: /var/www/html/tacticaledge-movie-app/frontend/
+        working-directory: /var/www/html/tacticaledge-movie-app/
         run: |
           echo "tacticaledge-movie-app-frontend"
           sudo git stash save --include-untracked "Custom message for my stash"
           sudo git pull
+          cd  /var/www/html/tacticaledge-movie-app/frontend/
+          npm i -f
+          npm run build 
