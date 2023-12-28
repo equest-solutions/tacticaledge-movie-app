@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          path: /var/www/html/tacticaledge-movie-app/frontend/
 
       - name: Pull and Build
         working-directory: /var/www/html/tacticaledge-movie-app/frontend/
