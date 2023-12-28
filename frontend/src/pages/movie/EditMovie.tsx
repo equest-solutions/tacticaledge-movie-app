@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import HeadingMedium from '../../components/typography/HeadingMedium';
 import MovieForm from './MovieForm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { EDIT_MOVIE_URL, GET_MOVIE_DETAILS_URL } from '../../helper/config';
@@ -19,9 +19,7 @@ function EditMovie() {
    const dispatch = useDispatch();
    const userId = useSelector((state: IRootState) => state.auth.userId);
    const token = useSelector((state: IRootState) => state.auth.token);
-   const curPage = useSelector((state: IRootState) => state.movie.activePage);
-   const movieList = useSelector((state: IRootState) => (state.movie?.moviesList ? state.movie?.moviesList[curPage] : null));
-   const movie = movieList ? movieList.find((mov: any) => mov.uuid === movieId) : null;
+   const [movie, setMovie] = useState<any>(null);
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
@@ -34,27 +32,36 @@ function EditMovie() {
 
       try {
          const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({uuid: movieId}),
+            method: 'GET',
             headers: {
                token: token!,
             },
          });
 
          const data = await response.json();
-         console.log(data);
+         if (!data.status) {
+            throw new Error(data.message);
+         }
          if (!response.ok) {
             throw new Error('Something went wrong!');
          }
 
          if (data) {
-            
+            setMovie({
+               title: data.data.title,
+               publish_year: data.data.publish_year,
+               image: data.data.image,
+            });
          }
       } catch (error: any) {
          setError(error.message);
       }
       setIsLoading(false);
    }
+
+   useEffect(() => {
+      getMovieDetails();
+   }, []);
 
    async function editMovieHandler(payload: Movie) {
       setError(null);
@@ -99,7 +106,7 @@ function EditMovie() {
             <div className="pt-12 pb-12">
                <HeadingMedium className="mb-11 md:mb-12">Edit</HeadingMedium>
                {isLoading && <ThemeLoadingSpinner />}
-               {movie && <MovieForm defaultState={movie} onSubmit={editMovieHandler} />}
+               {movie && !isLoading && <MovieForm defaultState={movie} onSubmit={editMovieHandler} />}
                {error && (
                   <div>
                      <TextPrimary className="text-danger mx-auto mt-5 text-center">{error}</TextPrimary>

@@ -90,11 +90,11 @@ function Login() {
 
          const data = await response.json();
          console.log(data);
-         if (!response.ok) {
-            throw new Error('Something went wrong!');
-         }
          if(!data.status) {
             throw new Error(data.message);
+         }
+         if (!response.ok) {
+            throw new Error('Something went wrong!');
          }
 
          if (data) {
