@@ -31,7 +31,7 @@ function EditMovie() {
       setIsLoading(true);
 
       const formData = new FormData();
-      if(payload.img) formData.append('image', payload.img);
+      if (payload.img) formData.append('image', payload.img);
       formData.append('title', payload.title);
       formData.append('publishingYear', payload.year);
       formData.append('user_uuid', userId!);
@@ -65,17 +65,18 @@ function EditMovie() {
 
    return (
       <>
-         {movie && <div className="container px-6">
+         <div className="container px-6">
             <div className="pt-12 pb-12">
                <HeadingMedium className="mb-11 md:mb-12">Edit</HeadingMedium>
-               {isLoading ? <ThemeLoadingSpinner /> : <MovieForm defaultState={movie} onSubmit={editMovieHandler} />}
+               {isLoading && <ThemeLoadingSpinner />}
+               {movie && <MovieForm defaultState={movie} onSubmit={editMovieHandler} />}
                {error && (
                   <div>
                      <TextPrimary className="text-danger mx-auto mt-5 text-center">{error}</TextPrimary>
                   </div>
                )}
             </div>
-         </div>}
+         </div>
       </>
    );
 }

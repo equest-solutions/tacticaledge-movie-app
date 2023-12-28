@@ -14,7 +14,7 @@ function Pagination({ totalPages, activePage, onPageChange }: PropsWithChildren<
          <button disabled={activePage === 1} onClick={() => onPageChange('prev')} className="font-bold disabled:opacity-80">
             Prev
          </button>
-         <div className="flex space-x-3">
+         <div className="flex space-x-3 flex-wrap gap-y-3">
             {Array.from(Array(totalPages).keys()).map((n, idx) => {
                const num = n + 1;
                if (num === activePage)

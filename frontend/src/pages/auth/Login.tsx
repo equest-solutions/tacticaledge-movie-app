@@ -99,6 +99,8 @@ function Login() {
                token: data.data.token,
                userId: data.data.uuid,
             }));
+            localStorage.setItem('token',data.data.token);
+            localStorage.setItem('userId',data.data.uuid);
             navigate('/movies');
          }
       } catch (error: any) {

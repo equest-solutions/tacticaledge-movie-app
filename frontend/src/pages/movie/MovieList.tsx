@@ -46,7 +46,7 @@ function MovieList() {
          }
          if (data) {
             let list = data.data.movies;
-            if(list.length > 8) list = list.slice(0,8); // this is done to solve an issue coming from backend.
+            // if(list.length > RES_PER_PAGE) list = list.slice(0,RES_PER_PAGE); // this is done to solve an issue coming from backend.
 
             dispatch(
                movieActions.setMoviesList({
