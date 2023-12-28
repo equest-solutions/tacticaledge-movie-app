@@ -16,7 +16,7 @@ jobs:
       - name: Git Pull in Custom Folder
         run: |
           echo "tacticaledge-movie-app-frontend"
-          sudo cd /var/www/html/tacticaledge-movie-app/
+          cd /var/www/html/tacticaledge-movie-app/
           sudo git stash save --include-untracked "Custom message for my stash"
           sudo git pull
 
