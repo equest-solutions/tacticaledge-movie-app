@@ -19,10 +19,11 @@ function MovieList() {
    const modified = useSelector((state: IRootState) => state.movie.isModified);
    const [activePage, setActivePage] = useState(1);
    const movieList = useSelector((state: IRootState) => (state.movie?.moviesList ? state.movie?.moviesList[activePage] : null));
+   const tp = useSelector((state: IRootState) => state.movie.totalPages);
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
-   const [totalPages, setTotalPages] = useState(1);
+   const [totalPages, setTotalPages] = useState(tp);
 
    async function getMoviesList() {
       setError(null);
@@ -44,14 +45,18 @@ function MovieList() {
             throw new Error('Something went wrong!');
          }
          if (data) {
+            let list = data.data.movies;
+            if(list.length > 8) list = list.slice(0,8); // this is done to solve an issue coming from backend.
+
             dispatch(
                movieActions.setMoviesList({
                   page: activePage,
-                  list: data.data.movies,
+                  list: list,
                })
             );
             const totalPages = Math.ceil(data.data.totalCount / RES_PER_PAGE);
             setTotalPages(totalPages);
+            dispatch(movieActions.setTotalPages(totalPages));
          }
       } catch (error: any) {
          setError(error.message);
@@ -65,6 +70,8 @@ function MovieList() {
    }, [activePage]);
 
    function pageChangeHandler(payload: PageChangePayload) {
+      if(activePage === 1 && payload === 'prev') return;
+      if(activePage === totalPages && payload === 'next') return;
       if (payload === 'next') {
          setActivePage((prev) => prev + 1);
       } else if (payload === 'prev') {

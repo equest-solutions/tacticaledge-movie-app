@@ -5,6 +5,7 @@ import HeadingMedium from '../../components/typography/HeadingMedium';
 import TextPrimary from '../../components/typography/TextPrimary';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/authSlice';
+import { movieActions } from '../../store/movieSlice';
 
 function MoviesHeader() {
    const dispatch = useDispatch();
@@ -12,6 +13,7 @@ function MoviesHeader() {
 
    function logoutHandler() {
       dispatch(authActions.logoutUser());
+      dispatch(movieActions.deleteMovies());
       navigate('/');
    }
 
