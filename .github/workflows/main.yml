@@ -16,6 +16,4 @@ jobs:
           sudo git pull
           npm i -f
           npm run build 
-          cd /var/www/html/tacticaledge-movie-app/backend/
-          npm i -f
           pm2 restart 0
